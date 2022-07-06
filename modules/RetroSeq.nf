@@ -1,52 +1,23 @@
 #!/usr/bin/env nextflow
 
 /*
-pipeline core
+module to run RetroSeq
 
 */
-
-params.folder = ""
-params.bam=""
+nextflow.enable.dsl = 2
 
 
-/*
-folder, get prefix of bamfiles
-defines a channel (bam_files) with bams in path
-which using map will;
-apply function and output new channel for each file
-*/
-
-if(params.folder){
-    print "analysing all bam files in ${params.folder}\n"
-
-    bam_files=Channel.fromPath("${params.folder}/*.bam").map{
-        line ->
-        ["${file(line).baseName}",file(line)]
-	}
-}
+bams = Channel.fromPath(params.in)
+// can be run using --in 'dataset/*.fa'
 
 
-/*
-if bamfile, get and check if all files exists
-define channel, map to function and produce new channel
-*/
-
-else if(params.bam){
-    Channel.from( params.bam.split(",")).subscribe{
-        if(!file(it).exists()) exit 1, "Missing bam:${it}, needs bam file to run "
-    }
-	bam_files=Channel.from(params.bam.split(",")).map{
-        line ->
-        ["${file(line).baseName}", file(line) ]
-	}
-    }
 
 //create output channels
 //queue channels (connecting several processes)
 
-RetroSeq = Channel.fromPath('{bam_file.baseName}.final.vcf')
+RetroSeq = Channel.fromPath('{bam_file.baseName}.final.vcf') 
 filter = Channel.fromPath('filter/output')
-annotate = Channel.fromPath('vep/output')
+annotate = Channel.fromPath('{bam_file.baseName}.final.VEP.vcf')
 
 
 //run RetroSeq
@@ -59,7 +30,7 @@ process run_retro_discover {
   cpus 2
 
   input:
-  file(params.bam) //or bam_file (params.bam to bam_file?)
+  file(bam_files) 
 
   output:
   path "${bam_file.baseName}.vcf" into publishDir
@@ -120,3 +91,8 @@ process run_vep {
 }
 
 //filter/rank
+
+workflow{
+
+  
+}
