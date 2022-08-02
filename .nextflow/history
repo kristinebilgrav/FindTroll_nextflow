@@ -1,1 +1,6 @@
 2022-07-06 16:49:09	-	zen_cuvier	-	5dfa18fc3b7c62a1f9305f1a8518165b	9ece6bd1-f8dd-4978-bd23-12bd71c0c850	nextflow run FindTroll_core.nf
+2022-07-07 13:01:28	-	prickly_mcnulty	-	2209b7d3d809f7cf6f269410a278f70d	370ec177-9574-457f-bc54-052284e5baf8	nextflow run main.nf
+2022-07-07 13:02:31	-	soggy_jennings	-	c1c8d34c4af4c06e88573fd3e4115a53	21d0a929-c7b2-49b3-8517-d9b353e2fff2	nextflow run main.nf
+2022-07-07 13:03:12	-	boring_bell	-	d6cb97fc2cfd205a7d8dee79e2e6ea8f	b9e02304-b4bc-4965-aa9d-806bfe738581	nextflow run main.nf
+2022-07-07 13:08:01	-	agitated_pesquet	-	c8fa8f8535d6ffeeb3cf742be54737cd	dbf830cd-8d68-4eb3-b5d3-2116b0f3e134	nextflow run main.nf
+2022-07-07 13:08:25	-	sick_almeida	-	c8fa8f8535d6ffeeb3cf742be54737cd	d0adc056-0f36-4751-a191-905118be8a5a	nextflow run main.nf --in folder/
