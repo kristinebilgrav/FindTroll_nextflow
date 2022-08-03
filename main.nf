@@ -7,27 +7,27 @@ main pipeline script
 nextflow.enable.dsl = 2
 
 
-bams = Channel.fromPath(params.in)
 params.config=""
-parmas.outdir = "results"
+//parmas.outdir = ""
 
 log.info """\
 FindTroll pipeline
 ------------------
-sample(s) : ${bams}
+sample(s) : ${params.bam}
 outdir :  ${params.outdir}
 
 """
-// include modules
 
-include { RetroSeq } from './modules/RetroSeq'
-include {annotate} from './modules/annotate'
+// include modules
+include { run_retro_discover; run_retro_call } from './modules/RetroSeq'
+include {run_vep} from './modules/annotate'
 
 // main script flow
 workflow{
-
-    RetroSeq(params.bam) 
-    annotate(RetroSeq.out)
+    bam = Channel.fromPath(params.bam)
+    run_retro_discover(bam) 
+    run_retro_call(bam)
+    run_vep(run_retro_call.out)
 }
 
 

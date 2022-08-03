@@ -16,7 +16,7 @@ process run_vep {
   cpus 4
 
   input:
-  file(vcf_file) from vcf_files
+  path 
 
   output:
   path "${bam_file.baseName}.final.VEP.vcf" into publishDir
