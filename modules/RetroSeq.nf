@@ -9,8 +9,6 @@ nextflow.enable.dsl = 2
 //create output channels
 //queue channels (connecting several processes)
 
-filter = Channel.fromPath('filter/output')
-
 /*
 Run retroseq - calling of Trolls (TRanspOsabLe eLementS)
 */
@@ -19,42 +17,42 @@ Run retroseq - calling of Trolls (TRanspOsabLe eLementS)
 //run RetroSeq
 process run_retro_discover {
   publishDir params.outdir, mode:'copy'
-  errorStrategy 'ignore'
 
   cpus 2
+  time '2h'
 
   input:
-  file(params.bam) 
-  // bam
+  path(params.bam) 
 
   output:
-  path "${bam.baseName}.vcf" 
+  path "${bam.baseName}.discovered.vcf" 
 
-  shell:
+  script:
   """
-  singularity exec ${params.FindTroll_home}/FindTroll.sif retroseq.pl -discover -bam ${bam} -output ${{bam.baseName}.vcf} -refTEs ${params.ref_ME_tab}
+  retroseq.pl -discover -bam ${params.bam} -output ${bam.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} 
   """
 
 }
+
+
 
 process run_retro_call {
-  publishDir "${params.outdir}", mode: 'copy', overwrite: true
+  publishDir params.outdir, mode: 'copy', overwrite: true
   errorStrategy 'ignore'
 
-
   cpus 2
+  time '2h'
 
   input:
-  bam, file x from run_retro_discover //how to get the name connected?
+  path(params.bam)
+  path("${bam.baseName}.discover.vcf")  
 
   output:
-  path "${bam.baseName}.final.vcf" 
+  path "${bam.baseName}.called.vcf" emit: called_vcf
 
   shell:
   """
-  singularity exec ${params.FindTroll_home}/FindTroll.sif retroseq.pl -call -bam ${bam} -input ${discover_vcf}   -ref ${params.ref_fasta}  -output ${{bam.baseName}.final.vcf}
+  retroseq.pl -call -bam ${params.bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.vcf
   """
 
 }
-
-
