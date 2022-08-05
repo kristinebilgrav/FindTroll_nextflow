@@ -17,44 +17,25 @@ outdir :  ${params.outdir}
 """
 
 // include modules
-include { run_retro_discover } from './modules/RetroSeq'
-include {run_vep} from './modules/annotate'
+include { run_retro } from './modules/RetroSeq'
+include {bgzip; run_vep} from './modules/annotate'
+include {run_split } from './modules/TEsplit'
+include { query } from './modules/dbquery'
 
 // main script flow
-workflow RetroSeq {
-
-    take: bam
-    main: 
-        run_retro_discover(bam)
-        run_retro_call(run_retro_discover.out)
-    emit:
-        called_vcf
-
-}
-
-
 workflow{
-    call = Channel.fromPath('results/*called.out')
-    run_retro_discover() 
-    run_retro_call(call)
-    annoteted = Channel.fromPath('results/*.called.VEP.vcf')
-    run_vep(annotated)
+    call = Channel.fromPath('results/*called.vcf')
+    run_retro(call) 
+    bgzip(run_retro.out)
+    run_vep(bgzip.out)
+    run_split(run_vep.out) 
+    dbquery = Channel.fromPath('results/*.vcf').buffer(size:4)
+    query(dbquery)
 }
 
 
-//split ?
 
-//ALU database
-
-//L1 database
-
-//SVA database
-
-//HERV database
-
-
-
-//filter/rank
+//filter/rank/sort
 
 
 //completion handler

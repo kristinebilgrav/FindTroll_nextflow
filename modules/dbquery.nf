@@ -5,12 +5,12 @@ module to query file against a database
 */
 
 // make seperate to run at the same time?
-process ALU_query {
+process query {
     input:
-    path alu_out
+    path 'vcf' from dbquery
     
     output:
-
+    path '*query_vcf' 
 
     shell:
     """
