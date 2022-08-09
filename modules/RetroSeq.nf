@@ -4,7 +4,7 @@
 module to run RetroSeq
 
 */
-nextflow.enable.dsl = 2
+
 
 //create output channels
 //queue channels (connecting several processes)
@@ -25,7 +25,7 @@ process run_retro{
   input:
   path(bam) 
 
-  output:
+  output: 
   path "${bam.baseName}.called.vcf", emit: called_vcf
 
   shell:

@@ -18,19 +18,19 @@ outdir :  ${params.outdir}
 
 // include modules
 include { run_retro } from './modules/RetroSeq'
-include {bgzip; run_vep} from './modules/annotate'
-include {run_split } from './modules/TEsplit'
+include { bgzip; run_vep } from './modules/annotate'
+include { run_split } from './modules/TEsplit'
 include { query } from './modules/dbquery'
 
 // main script flow
 workflow{
-    call = Channel.fromPath('results/*called.vcf')
+    call = Channel.fromPath(params.bam) //queue channel
     run_retro(call) 
     bgzip(run_retro.out)
     run_vep(bgzip.out)
     run_split(run_vep.out) 
-    dbquery = Channel.fromPath('results/*.vcf').buffer(size:4)
-    query(dbquery)
+    splitfiles = Channel.fromPath('results/*.*.vcf') //.buffer(size:4)
+    query(splitfiles)
 }
 
 

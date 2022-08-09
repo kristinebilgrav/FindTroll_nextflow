@@ -5,11 +5,10 @@
 Annotate output
 */
 
-nextflow.enable.dsl = 2
-
 process bgzip {
   publishDir params.outdir, mode: 'copy'
   beforeScript 'module load bioinfo-tools tabix vcftools'
+  errorStrategy 'ignore'
 
   input:
   path(called_vcf)
@@ -20,7 +19,6 @@ process bgzip {
   shell:
   """
   vcf-sort -c ${called_vcf}  > ${called_vcf.baseName}.sort.vcf && bgzip ${called_vcf.baseName}.sort.vcf && tabix ${called_vcf.baseName}.sort.vcf.gz
-  rm ${called_vcf.baseName}.sort.vcf
   """
 }
 
@@ -40,7 +38,7 @@ process run_vep {
 
   shell:
   """
-  ${params.vep_path} -i ${called_vcf}.gz -o ${called_gz.baseName}.VEP.vcf ${params.vep_args}
+  ${params.vep_path} -i ${called_gz} -o ${called_gz.baseName}.VEP.vcf ${params.vep_args}
   """
 
 }

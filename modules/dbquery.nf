@@ -4,33 +4,37 @@
 module to query file against a database
 */
 
-// make seperate to run at the same time?
+// make seperate to run at the same time
 process query {
-    input:
-    path 'vcf' from dbquery
+  publishDir params.outdir, mode:'copy'
+  cpus 2
+  time '1h'
+
+  input:
+  file split from splitfiles
     
-    output:
-    path '*query_vcf' 
-
-    shell:
+  //output:
+  //path "${split.baseName}*query.vcf" 
+  script:
+  if('ALU' in $split)
     """
-    singularity exec findtroll.sif svdb --query --query_vcf ${input} --db ${params.alu_vcf} --overlap -1 --bnd_distance 150 > ${{bam.baseName}.ALU.query.vcf}
+    svdb --query --query_vcf $split --db ${params.alu_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.ALU.query.vcf
     """
 
-    else if 'L1' in vcf
-        """
-        singularity exec findtroll.sif svdb --query --query_vcf ${input} --db ${params.L1_vcf} --overlap -1 --bnd_distance 150 > ${{bam.baseName}.L1.query.vcf}
-        """
+  else if('L1' in split)
+    """
+    svdb --query --query_vcf $split --db ${params.L1_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.L1.query.vcf
+    """
 
-    else if 'HERV' in vcf
-        """
-        singularity exec findtroll.sif svdb --query --query_vcf ${input} --db ${params.HERV_vcf} --overlap -1 --bnd_distance 150 > ${{bam.baseName}.HERV.query.vcf}
-        """
+  else if('HERV' in split)
+    """
+    svdb --query --query_vcf $split --db ${params.HERV_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.HERV.query.vcf
+    """
 
-    else if 'SVA' in vcf
-        """
-        singularity exec findtroll.sif svdb --query --query_vcf ${input} --db ${params.SVA_vcf} --overlap -1 --bnd_distance 150 > ${{bam.baseName}.SVA.query.vcf}
-        """
+  else
+    """
+   svdb --query --query_vcf $split --db ${params.SVA_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.SVA.query.vcf
+    """
     
 }
 

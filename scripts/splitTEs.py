@@ -1,11 +1,13 @@
 import sys
 
-herv = open(name + '_HERV.vcf', 'w')
-alu = open(name + '_ALU.vcf', 'w')
-l1 = open(name + '_L1.vcf', 'w')
-sva = open(name + '_SVA.vcf', 'w')
+name = sys.argv[1]
 
-for line in open(snakemake.input[0]):
+herv = open(name + '.HERV.vcf', 'w')
+alu = open(name + '.ALU.vcf', 'w')
+l1 = open(name + '.L1.vcf', 'w')
+sva = open(name + '.SVA.vcf', 'w')
+
+for line in open(sys.argv[2]):
 	if line.startswith('#'):
 		herv.write(line)
 		alu.write(line)
