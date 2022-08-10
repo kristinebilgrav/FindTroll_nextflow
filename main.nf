@@ -28,8 +28,8 @@ workflow{
     run_retro(call) 
     bgzip(run_retro.out)
     run_vep(bgzip.out)
-    run_split(run_vep.out) 
-    splitfiles = Channel.fromPath('results/*.*.vcf') //.buffer(size:4)
+    run_split(annotated_vcf) 
+    splitfiles = Channel.fromPath('./results*.VEP.*.vcf')
     query(splitfiles)
 }
 

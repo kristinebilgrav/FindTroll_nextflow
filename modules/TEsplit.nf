@@ -10,8 +10,8 @@ process run_split {
     path(annotated_vcf)
 
     output:
- //   path("${bam.baseName}.ALU.vcf") emit: alu_out
-    path "${annotated_vcf.baseName}.*.vcf", emit: splitfiles
+    path "${annotated_vcf.baseName}.*.vcf" 
+
 
     script:
     """
