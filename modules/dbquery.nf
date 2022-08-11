@@ -14,29 +14,15 @@ process query {
     path(split)
     
     output:
-    path "${split.baseName}.query.vcf"
+    path "${split.baseName}.query.vcf", emit: query_vcf
     
     script:
-    if( "${split}" =~ '*ALU.vcf')
-        """
-        svdb --query --query_vcf $split --db ${params.alu_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.query.vcf
-        """
 
-    else if("${split}" =~ *L1.vcf)
-        """
-        svdb --query --query_vcf $split --db ${params.l1_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.L1.query.vcf
-        """
+    def values = "${split}".tokenize('.')
+    TE = values[-2]
 
-    else if("${split}" =~ *HERV.vcf)
-        """
-        svdb --query --query_vcf $split --db ${params.herv_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.HERV.query.vcf
-        """
-
-    else
-        """
-        svdb --query --query_vcf $split --db ${params.sva_vcf} --overlap -1 --bnd_distance 150 > ${split.baseName}.SVA.query.vcf
-        """
-    
+    """
+    svdb --query --query_vcf $split --db ${params."${TE}"} --overlap -1 --bnd_distance 150 > ${split.baseName}.query.vcf
+    """
 }
-
 

@@ -11,14 +11,14 @@ process bgzip {
   errorStrategy 'ignore'
 
   input:
-  path(called_vcf)
+  path vcf
 
   output:
-  path "${called_vcf.baseName}.sort.vcf.gz", emit: called_gz
+  path "${vcf.baseName}.sort.vcf.gz", emit: gzipped
 
   shell:
   """
-  vcf-sort -c ${called_vcf}  > ${called_vcf.baseName}.sort.vcf && bgzip ${called_vcf.baseName}.sort.vcf && tabix ${called_vcf.baseName}.sort.vcf.gz
+  vcf-sort -c ${vcf}  > ${vcf.baseName}.sort.vcf && bgzip ${vcf.baseName}.sort.vcf && tabix ${vcf.baseName}.sort.vcf.gz
   """
 }
 
@@ -31,14 +31,14 @@ process run_vep {
   time '1h'
 
   input:
-  path(called_gz)
+  path(gzipped)
 
   output:
-  path "${called_gz.baseName}.VEP.vcf", emit: annotated_vcf
+  path "${gzipped.baseName}.VEP.vcf", emit: annotated_vcf
 
   shell:
   """
-  ${params.vep_path} -i ${called_gz} -o ${called_gz.baseName}.VEP.vcf ${params.vep_args}
+  ${params.vep_path} -i ${gzipped} -o ${gzipped.baseName}.VEP.vcf ${params.vep_args} && rm ${gzipped}
   """
 
 }
