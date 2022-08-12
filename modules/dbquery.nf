@@ -6,7 +6,7 @@ module to query file against a database
 
 // make seperate to run at the same time
 process query {
-    publishDir params.outdir, mode:'copy'
+    publishDir params.tmpdir, mode:'copy'
     cpus 1
     time '1h'
     
