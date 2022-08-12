@@ -1,0 +1,4 @@
+ALU	./resources/human_g1k_v37.fasta.out.Alu.bed
+L1	./resources/human_g1k_v37.fasta.out.L1.bed
+HERV	./resources/human_g1k_v37.fasta.out.HERV.bed
+SVA	./resources/human_g1k_v37.fasta.out.SVA.bed
