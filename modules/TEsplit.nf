@@ -5,7 +5,7 @@ module to split file into respective TE types
 */
 
 process run_split {
-    publishDir params.tmpdir, mode:'copy'
+    publishDir params.tmpfiles, mode:'copy'
     input:
     path(annotated_vcf)
 

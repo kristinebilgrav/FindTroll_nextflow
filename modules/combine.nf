@@ -5,18 +5,18 @@ module to merge TE files to one and delete unneeded files
 */
 
 process merge {
-    publishDir params.outdir, mode:'copy'
+    publishDir params.output, mode:'copy'
     errorStrategy 'ignore'
     cpus 1
     time '1h'
 
     input:
-    file queryList
+    path queryList
 
     output:
     path "${params.sample_ID}.TEcalls.vcf.gz"
 
-    shell:
+    script:
     """
     zgrep '#' ${queryList[0]} > ${params.sample_ID}.TEcalls.vcf.gz |
     for qFile in ${queryList}
@@ -25,15 +25,4 @@ process merge {
     done 
     """
 }
-
-process clean {
-
-    shell:
-    """
-    rm -rf ${params.tmpdir}
-    """
-
-}
-
-
 

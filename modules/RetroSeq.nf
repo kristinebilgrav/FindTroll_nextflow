@@ -16,10 +16,10 @@ Run retroseq - calling of Trolls (TRanspOsabLe eLementS)
 
 //run RetroSeq
 process run_retro{
-  publishDir params.outdir, mode:'copy'
+  publishDir params.output, mode:'copy'
 
   cpus 2
-  time '5h'
+  time '10h'
   errorStrategy 'ignore'
 
   input:
@@ -28,7 +28,7 @@ process run_retro{
   output: 
   path "${bam.baseName}.called.vcf", emit: called_vcf
 
-  shell:
+  script:
   """
   retroseq.pl -discover -bam ${params.bam} -output ${bam.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
   retroseq.pl -call -bam ${params.bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.vcf

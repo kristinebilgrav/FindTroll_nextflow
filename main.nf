@@ -24,21 +24,20 @@ include { run_retro } from './modules/RetroSeq'
 include { bgzip; bgzip as zip; run_vep } from './modules/annotate'
 include { run_split } from './modules/TEsplit'
 include { query } from './modules/dbquery'
-include { merge; clean } from  './modules/combine'
+include { merge } from  './modules/combine'
 
 // main script flow
 workflow{
     call = Channel.fromPath(params.bam)
     run_retro(call) 
-    bgzip(run_retro.out)
+    bgzip(run_retro.out.called_vcf)
     run_vep(bgzip.out)
-    run_split(annotated_vcf) 
-    splitfiles = Channel.fromPath('./tmpdir*.VEP.*.vcf')
+    run_split(run_vep.out.annotated_vcf) 
+    splitfiles = Channel.fromPath("${params.tmpfiles}/*.VEP.*.vcf")
     query(splitfiles)
     zip(query.out)
-    tomerge = Channel.fromPath('./tmpdir/*.query.sort.vcf.gz').collect()
+    tomerge = Channel.fromPath("${params.tmpfiles}/*.query.sort.vcf.gz").collect()
     merge(tomerge)
-    clean()
 }
 
 

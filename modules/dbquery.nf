@@ -8,7 +8,7 @@ module to query file against a database
 process query {
     publishDir params.tmpdir, mode:'copy'
     cpus 1
-    time '1h'
+    time '5h'
     
     input:
     path(split)

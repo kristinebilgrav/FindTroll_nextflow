@@ -15,8 +15,9 @@ process bgzip {
 
   output:
   path "${vcf.baseName}.sort.vcf.gz", emit: gzipped
+  path "${vcf.baseName}.sort.vcf.gz.tbi", emit: index
 
-  shell:
+  script:
   """
   vcf-sort -c ${vcf}  > ${vcf.baseName}.sort.vcf && bgzip ${vcf.baseName}.sort.vcf && tabix ${vcf.baseName}.sort.vcf.gz
   """
@@ -24,7 +25,7 @@ process bgzip {
 
 //VEP
 process run_vep {
-  publishDir params.tmpdir, mode: 'copy'
+  publishDir params.tmpfiles, mode: 'copy'
   beforeScript 'module load bioinfo-tools vep'
  
   cpus 4
@@ -36,7 +37,7 @@ process run_vep {
   output:
   path "${gzipped.baseName}.VEP.vcf", emit: annotated_vcf
 
-  shell:
+  script:
   """
   ${params.vep_path} -i ${gzipped} -o ${gzipped.baseName}.VEP.vcf ${params.vep_args} && rm ${gzipped}
   """
