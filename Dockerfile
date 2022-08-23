@@ -11,5 +11,5 @@ RUN pip install numpy cython
 RUN pip install SVDB
 
 #RetroSeq
-
-#
+RUN git clone https://github.com/kristinebilgrav/RetroSeq.git
+ENV PATH="/RetroSeq/bin:${PATH}"

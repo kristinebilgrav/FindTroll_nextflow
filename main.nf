@@ -12,7 +12,7 @@ FindTroll pipeline
 ------------------
 config: ${params.config}
 sample(s) : ${params.bam}
-outdir :  ${params.outdir}
+output directory :  ${params.output}
 
 """
 
@@ -44,5 +44,5 @@ workflow{
 
 //completion handler
 workflow.onComplete {
-    log.info (workflow.success ? "Done, trolls found and captured in results!" : "Failed, did the sun come too soon and turn the troll to stone? :(")
+    log.info (workflow.success ? "Done, trolls found and captured in ${params.tmpfiles}!" : "Failed, did the sun come too soon and turn the troll to stone? :(")
 }
