@@ -4,7 +4,7 @@ Find TRanspOsabLe eLements in short-read WGS data.
 Calls transposable elements in SR data using RetroSeq. 
 Annotates and queries against database of common TE insertions using cutsom databases.   
 
-Docker image with RetroSeq and SVDB. 
+Docker image with RetroSeq, delly, MobileAnn and SVDB. 
 
 Requires VEP. 
 

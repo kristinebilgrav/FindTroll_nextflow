@@ -21,6 +21,7 @@ params.sample_ID = names[-2]
  
  // include modules
 include { run_retro } from './modules/RetroSeq'
+include { run_delly ; MobileAnn } from './modules/delly'
 include { bgzip; bgzip as zip; run_vep } from './modules/annotate'
 include { run_split } from './modules/TEsplit'
 include { query } from './modules/dbquery'
@@ -30,7 +31,9 @@ include { merge } from  './modules/combine'
 workflow{
     call = Channel.fromPath(params.bam)
     run_retro(call) 
-    bgzip(run_retro.out.called_vcf)
+    run_delly(call)
+    MobileAnn()
+    bgzip(MobileAnn.out.DR_vcf)
     run_vep(bgzip.out)
     run_split(run_vep.out.annotated_vcf) 
     splitfiles = Channel.fromPath("${params.tmpfiles}/*.VEP.*.vcf")
