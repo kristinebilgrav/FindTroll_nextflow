@@ -26,12 +26,12 @@ process run_retro{
   path(bam) 
 
   output: 
-  path "${bam.baseName}.called.vcf", emit: called_vcf
+  path "${bam.baseName}.called.R.vcf", emit: called_vcf
 
   script:
   """
   retroseq.pl -discover -bam ${params.bam} -output ${bam.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
-  retroseq.pl -call -bam ${params.bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.vcf
+  retroseq.pl -call -bam ${params.bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.R.vcf
   """
 
 }

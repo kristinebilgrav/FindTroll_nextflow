@@ -30,12 +30,13 @@ process bcf_to_vcf {
     publishDir params.output, mode:'copy'
     
     cpus 2
+    time '1h'
 
     input:
     path(delly_bcf)
 
     output:
-    "${params.sample_ID}.delly.vcf", emit: delly_vcf
+    path "${params.sample_ID}.delly.vcf", emit: delly_vcf
 
     script:
     """
@@ -54,10 +55,11 @@ process MobileAnn {
     path(called_vcf)
 
     output:
-    path "${params.sample_ID}.delly.retro.vcf", emit: DR_vcf
+    path "${params.sample_ID}.called.delly.retro.vcf", emit: DR_vcf
 
     script:
     """
-    MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_tab} -d 300 > ${params.sample_ID}.delly.retro.vcf
+    MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_tab} -d 300 > ${params.sample_ID}.mobileann.vcf &&  
+    python ${params.working_dir}/scripts/filter.py ${params.sample_ID}.mobileann.vcf ${params.sample_ID}.called.delly.retro.vcf
     """
 }
