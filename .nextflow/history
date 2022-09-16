@@ -4,3 +4,27 @@
 2022-07-07 13:03:12	-	boring_bell	-	d6cb97fc2cfd205a7d8dee79e2e6ea8f	b9e02304-b4bc-4965-aa9d-806bfe738581	nextflow run main.nf
 2022-07-07 13:08:01	-	agitated_pesquet	-	c8fa8f8535d6ffeeb3cf742be54737cd	dbf830cd-8d68-4eb3-b5d3-2116b0f3e134	nextflow run main.nf
 2022-07-07 13:08:25	-	sick_almeida	-	c8fa8f8535d6ffeeb3cf742be54737cd	d0adc056-0f36-4751-a191-905118be8a5a	nextflow run main.nf --in folder/
+2022-09-16 09:59:58	-	happy_bartik	-	9deafbe2edc5d57f0239397862e56f16	e9358fed-5fed-4b0b-8dc4-60a1d6743889	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:00:55	-	mad_mclean	-	2bbbdf46e36c79cc86b5714e008b8f16	39847d28-5360-460f-bf13-7e9e03594b29	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:01:26	-	sad_payne	-	9fbd9bb91455684febbd0780ca4a462e	740d4e2d-f095-4a1d-9a06-2fb6ff5a3761	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:02:07	-	distraught_nobel	-	acb81a88a4d197b007eae0dde20ae15f	21444878-38cc-4581-bf57-91fc341e8c38	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:10:01	-	festering_austin	-	bd20f060948be15859f48c17bd6c3073	92210afa-bcd3-49de-a2d6-475988512356	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:10:38	-	extravagant_becquerel	-	9e530ab28db156b7cd554e698aa4dcdc	682f4329-83ef-4e8b-95b6-fbdcfe6637e7	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:11:04	-	trusting_yonath	-	9e530ab28db156b7cd554e698aa4dcdc	0d2f3492-976f-4258-8dc5-ad8dc1ab07b4	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:12:41	-	special_blackwell	-	0488f8344d41dc8ffb0820ad88dfe022	bd444d73-8d18-4326-9b55-28e0b527173d	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:27:26	-	agitated_linnaeus	-	e6b121a30cd36dfbe7aad816a93152e3	84a0c5b6-6655-491a-9aef-a6003c52d495	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:28:32	-	tender_shirley	-	22bd8cbdc620f95e3e778a048f895db2	9c603517-527b-4723-9627-1ce4f25ca086	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:42:57	-	festering_borg	-	00631b3f3701315a33fd97ebf8deb328	c48deabe-2ad5-437d-a1c3-e6af0a14d39c	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:44:19	-	curious_hodgkin	-	4f36a4363cb916ae4c3900db1b3f81eb	f6f0a9ff-a839-4be2-813e-65f68bf29e40	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:45:05	-	adoring_waddington	-	caf58a96a7f0b9bd87fd0324d3ba9b9d	d5981c32-07a3-4053-94f9-c19f110b17bf	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:45:55	-	tender_banach	-	7ad5f158c51ba9553c67afbef83ff6f0	a41492f9-2168-4258-942e-09ee3cbe883b	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:46:23	-	wise_kalam	-	3eac22f66b7cd61f159058501f519a0d	5b2e453d-f396-469f-963f-8f9a6c3a133e	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:47:03	-	goofy_jang	-	e04af4359d9d3c24ed4977c2af0c6a78	00f43b96-9b4e-443a-a2eb-ec8dc2ed28b7	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 10:48:48	-	lethal_albattani	-	3e739aa16a994f39a8fe01e7a5f885a7	bede38f7-f36f-4c28-afee-91250f64b76e	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:01:16	-	nice_sanger	-	ad369366ba6111c18a99de768fb2b8aa	efa21dd4-6ab6-463d-9ba9-1708751ec780	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:07:06	-	elated_kimura	-	0a5d85b96dc717d20b9ad92fa32bc6c3	c387690c-c1e5-4478-98a4-22fee3f42958	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:07:37	4.3s	condescending_swirles	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	aa25a3b3-030c-4aa5-9efa-6c82f9a99dad	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:08:53	4.2s	soggy_liskov	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	f7f89534-80e4-486c-bb20-209d2dcd177f	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:09:33	3.4s	sharp_mclean	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	e27cb676-4f51-4b32-b274-ace35eca63e4	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:10:29	4.1s	reverent_venter	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	6f9a9a9c-361c-48ca-b647-54d9d749f85d	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-16 11:11:12	3m 5s	compassionate_murdock	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	5462cb7a-5404-4052-a96c-ede29977d7d4	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting

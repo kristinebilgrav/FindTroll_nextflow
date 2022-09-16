@@ -25,45 +25,34 @@ include { run_delly ; bcf_to_vcf ; MobileAnn } from './modules/delly'
 include { bgzip; bgzip as zip; run_vep } from './modules/annotate'
 include { run_split } from './modules/TEsplit'
 include { query } from './modules/dbquery'
-include { svdb_merge ; merge } from  './modules/combine'
+include { svdb_merge ; merge_calls } from  './modules/combine'
 
-// main script flow
-workflow call {
-    call = Channel.fromPath(params.bam)
-    run_retro(call) 
-    run_delly(call)
+//channels 
+
+
+workflow {
+    bamFile = Channel.fromPath("${params.bam}")
+    run_retro(bamFile) 
+    run_delly(bamFile)
     bcf_to_vcf(run_delly.out)
 
-    TEannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
-    MobileAnn(TEannotate)
+    teannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
+    MobileAnn(teannotate)
 
-}
- 
- workflow merge {
-    
+
     calledList = Channel.fromPath("${params.output}/*.called.*.vcf")
     svdb_merge(calledList)
     //bgzip(MobileAnn.out.DR_vcf)
 
- }
-
- workflow annotate {
     run_vep(svdb_merge.out)
     run_split(run_vep.out.annotated_vcf) 
     splitfiles = Channel.fromPath("${params.tmpfiles}/*.VEP.*.vcf")
     query(splitfiles)
     zip(query.out)
     tomerge = Channel.fromPath("${params.tmpfiles}/*.query.sort.vcf.gz").collect()
-    merge(tomerge)
+    merge_calls(tomerge)
 }
 
-workflow {
-    take: params.bam
-    main: 
-        call(bam)
-        merge(call.out)
-        annotate(merge.out)
-}
 
 //completion handler
 workflow.onComplete {

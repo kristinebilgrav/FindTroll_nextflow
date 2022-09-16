@@ -51,8 +51,7 @@ process MobileAnn {
     time '1h'
 
     input:
-    path(delly_vcf)
-    path(called_vcf)
+    path(teannotate)
 
     output:
     path "${params.sample_ID}.called.delly.retro.vcf", emit: DR_vcf

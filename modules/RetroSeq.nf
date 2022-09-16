@@ -23,15 +23,15 @@ process run_retro{
   errorStrategy 'ignore'
 
   input:
-  path(bam) 
+  path(bamFile) 
 
   output: 
-  path "${bam.baseName}.called.R.vcf", emit: called_vcf
+  path "${bamFile.baseName}.called.R.vcf", emit: called_vcf
 
   script:
   """
-  retroseq.pl -discover -bam ${params.bam} -output ${bam.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
-  retroseq.pl -call -bam ${params.bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.R.vcf
+  retroseq.pl -discover -bam ${params.bam} -output ${bamFile.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
+  retroseq.pl -call -bam ${params.bam} -input ${bamFile.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bamFile.baseName}.called.R.vcf
   """
 
 }

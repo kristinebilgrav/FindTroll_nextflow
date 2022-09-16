@@ -6,7 +6,7 @@ Annotate output
 */
 
 process bgzip {
-  publishDir params.tmpdir, mode: 'copy'
+  publishDir params.tmpfiles, mode: 'copy'
   beforeScript 'module load bioinfo-tools tabix vcftools'
   errorStrategy 'ignore'
 

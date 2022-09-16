@@ -1,3 +1,5 @@
 # Logs and databases #
 ######################
 *.next*
+*.local.conf*
+work

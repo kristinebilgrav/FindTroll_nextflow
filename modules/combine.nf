@@ -24,7 +24,7 @@ process svdb_merge {
     
 }
 
-process merge {
+process merge_calls {
     publishDir params.output, mode:'copy'
     errorStrategy 'ignore'
     cpus 1
