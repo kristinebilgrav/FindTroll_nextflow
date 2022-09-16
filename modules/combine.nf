@@ -18,7 +18,8 @@ process svdb_merge {
 
     script:
     """
-    svdb --merge --vcf  ${calledList}[0] ${calledList}[1] --bnd_distance 150 > ${params.sample_ID}.called.vcf
+    svdb --merge --vcf  ${calledList}[0] ${calledList}[1] --bnd_distance 150 > ${params.sample_ID}.all.called.vcf &&
+    python ${params.working_dir}/scripts/filter.py ${params.sample_ID}.all.called.vcf ${params.sample_ID}.called.vcf
     """
     
 }
