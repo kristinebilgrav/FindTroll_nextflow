@@ -9,18 +9,20 @@ module to run delly
 process run_delly {
 
     publishDir params.output, mode:'copy'
-    cpus 2
+    cpus 4
     time '10h'
 
     input:
-    path(bam)
+    //path(bam)
+    tuple val(bamID), file(bamFile)
+    path(bai)
 
     output:
-    path "${bam.baseName}.delly.bcf", emit: delly_bcf
+    path "${bamID}.delly.bcf", emit: delly_bcf
 
     script:
     """
-    delly call -o ${bam.baseName}.delly.vcf -g ${params.ref_fasta} ${bam}
+    delly call -o ${bamID}.delly.bcf -g ${params.ref_fasta} ${bamFile}
     """
 
 
@@ -28,7 +30,7 @@ process run_delly {
 
 process bcf_to_vcf {
     publishDir params.output, mode:'copy'
-    
+    beforeScript 'module load bioinfo-tools bcftools'
     cpus 2
     time '1h'
 
@@ -36,11 +38,11 @@ process bcf_to_vcf {
     path(delly_bcf)
 
     output:
-    path "${params.sample_ID}.delly.vcf", emit: delly_vcf
+    path "${delly_bcf.simpleName}.delly.vcf", emit: delly_vcf
 
     script:
     """
-    bcftools view ${delly_bcf} > ${params.sample_ID}.delly.vcf 
+    bcftools view ${delly_bcf} > ${delly_bcf.simpleName}.delly.vcf 
     """
 }
 
@@ -51,14 +53,15 @@ process MobileAnn {
     time '1h'
 
     input:
-    path(teannotate)
+    path(delly_vcf)
+    path(called_vcf)
 
     output:
-    path "${params.sample_ID}.called.delly.retro.vcf", emit: DR_vcf
+    path "${delly_vcf.simpleName}.called.delly.retro.vcf", emit: DR_vcf
 
     script:
     """
-    MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_tab} -d 300 > ${params.sample_ID}.mobileann.vcf &&  
-    python ${params.working_dir}/scripts/filter.py ${params.sample_ID}.mobileann.vcf ${params.sample_ID}.called.delly.retro.vcf
+    MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_bed} -d 300 > ${delly_vcf.simpleName}.mobileann.vcf &&  
+    python ${params.working_dir}/scripts/filter.py ${delly_vcf.simpleName}.mobileann.vcf ${delly_vcf.simpleName}.called.delly.retro.vcf
     """
 }

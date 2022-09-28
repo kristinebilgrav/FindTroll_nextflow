@@ -11,15 +11,16 @@ process svdb_merge {
     time '1h'
 
     input:
-    path calledList
+    path(called_vcf)
+    path(DR_vcf)
 
     output:
-    path "${params.sample_ID}.called.vcf", emit: all_calls
+    path "${called_vcf.simpleName}.called.vcf", emit: all_calls
 
     script:
     """
-    svdb --merge --vcf  ${calledList}[0] ${calledList}[1] --bnd_distance 150 > ${params.sample_ID}.all.called.vcf &&
-    python ${params.working_dir}/scripts/filter.py ${params.sample_ID}.all.called.vcf ${params.sample_ID}.called.vcf
+    svdb --merge --vcf  ${called_vcf} ${DR_vcf} --bnd_distance 150 > ${called_vcf.simpleName}.all.called.vcf &&
+    python ${params.working_dir}/scripts/filter.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
     """
     
 }
@@ -34,14 +35,14 @@ process merge_calls {
     path queryList
 
     output:
-    path "${params.sample_ID}.TEcalls.vcf.gz"
+    path "${queryList[0].simpleName}.TEcalls.vcf.gz"
 
     script:
     """
-    zgrep '#' ${queryList[0]} > ${params.sample_ID}.TEcalls.vcf.gz |
+    zgrep '#' ${queryList[0]} > ${queryList[0].simpleName}.TEcalls.vcf.gz |
     for qFile in ${queryList}
     do
-        zgrep -v '#' \$qFile  >> ${params.sample_ID}.TEcalls.vcf.gz && rm \$qFile
+        zgrep -v '#' \$qFile  >> ${queryList[0].simpleName}.TEcalls.vcf.gz && rm \$qFile
     done 
     """
 }

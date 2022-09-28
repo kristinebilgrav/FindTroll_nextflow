@@ -28,3 +28,6 @@
 2022-09-16 11:09:33	3.4s	sharp_mclean	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	e27cb676-4f51-4b32-b274-ace35eca63e4	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
 2022-09-16 11:10:29	4.1s	reverent_venter	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	6f9a9a9c-361c-48ca-b647-54d9d749f85d	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
 2022-09-16 11:11:12	3m 5s	compassionate_murdock	ERR	0a5d85b96dc717d20b9ad92fa32bc6c3	5462cb7a-5404-4052-a96c-ede29977d7d4	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-27 15:35:37	11s	angry_lamarr	ERR	81281c37ec0214eb46da113955472171	53adbde0-eb47-4a14-a53d-65274c92ec7c	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-27 15:36:38	1h 5m 47s	sleepy_church	ERR	81281c37ec0214eb46da113955472171	70c2b23e-094b-4265-9d42-5bfeb1c98acc	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting
+2022-09-27 16:42:39	7s	lonely_wiles	ERR	81281c37ec0214eb46da113955472171	4a10b03e-3ab5-4451-ae7d-2a3376d1b26c	nextflow run main.nf -config FindTroll.local.config --bam ../TEdatabases/TestBam.bam --output Testting

@@ -20,18 +20,19 @@ process run_retro{
 
   cpus 2
   time '10h'
-  errorStrategy 'ignore'
+  //errorStrategy 'ignore'
 
   input:
-  path(bamFile) 
+  tuple val(bamID), file(bamFile)
+  path(bai)
 
   output: 
-  path "${bamFile.baseName}.called.R.vcf", emit: called_vcf
+  path "${bamID}.called.R.vcf", emit: called_vcf
 
   script:
   """
-  retroseq.pl -discover -bam ${params.bam} -output ${bamFile.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
-  retroseq.pl -call -bam ${params.bam} -input ${bamFile.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bamFile.baseName}.called.R.vcf
+  retroseq.pl -discover -bam ${bamFile} -output ${bamID}.discover.vcf -refTEs ${params.ref_ME_tab} && \
+  retroseq.pl -call -bam ${bamFile} -input ${bamID}.discover.vcf -ref ${params.ref_fasta}  -output ${bamID}.called.R.vcf
   """
 
 }

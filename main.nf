@@ -31,21 +31,24 @@ include { svdb_merge ; merge_calls } from  './modules/combine'
 
 
 workflow {
-    bamFile = Channel.fromPath("${params.bam}")
-    run_retro(bamFile) 
-    run_delly(bamFile)
+    bam = Channel
+        .fromFilePairs("${params.bam}")
+        //.map {file -> tuple(file.baseName, file)}
+        .view()
+    bai = Channel.fromPath("${params.bam}.bai")    
+    run_retro(bam, bai) 
+    run_delly(bam, bai)
     bcf_to_vcf(run_delly.out)
 
-    teannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
-    MobileAnn(teannotate)
+    //teannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
 
-
-    calledList = Channel.fromPath("${params.output}/*.called.*.vcf")
-    svdb_merge(calledList)
+    MobileAnn(run_retro.out.called_vcf , bcf_to_vcf.out)
+    svdb_merge(run_retro.out.called_vcf , MobileAnn.out.DR_vcf)
     //bgzip(MobileAnn.out.DR_vcf)
 
     run_vep(svdb_merge.out)
     run_split(run_vep.out.annotated_vcf) 
+
     splitfiles = Channel.fromPath("${params.tmpfiles}/*.VEP.*.vcf")
     query(splitfiles)
     zip(query.out)
@@ -56,5 +59,5 @@ workflow {
 
 //completion handler
 workflow.onComplete {
-    log.info (workflow.success ? "Done, trolls found and captured in ${params.tmpfiles}!" : "Failed, did the sun come too soon and turn the troll to stone? :(")
+    log.info (workflow.success ? "Done, trolls found and captured in ${params.output}!" : "Failed, did the sun come too soon and turn the troll to stone? :(")
 }
