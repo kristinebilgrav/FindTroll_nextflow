@@ -5,7 +5,7 @@ module to merge TE files to one and delete unneeded files
 */
 
 process svdb_merge {
-    publishDir params.tmpfiles, mode:'copy'
+    publishDir params.output, mode:'copy'
 
     cpus 1
     time '1h'
@@ -32,8 +32,11 @@ process merge_calls {
     time '1h'
 
     input:
-    path queryList
-
+    path(ALU)
+    path(HERV)
+    path(L1)
+    path(SVA)
+ 
     output:
     path "${queryList[0].simpleName}.TEcalls.vcf.gz"
 

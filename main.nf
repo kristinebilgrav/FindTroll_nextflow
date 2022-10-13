@@ -16,8 +16,6 @@ output directory :  ${params.output}
 
 """
 
-String[] names = "${params.bam}".split("[/.]")
-params.sample_ID = names[-2]
  
  // include modules
 include { run_retro } from './modules/RetroSeq'
@@ -42,17 +40,17 @@ workflow {
 
     //teannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
 
-    MobileAnn(run_retro.out.called_vcf , bcf_to_vcf.out)
+    MobileAnn(bcf_to_vcf.out, run_retro.out.called_vcf )
     svdb_merge(run_retro.out.called_vcf , MobileAnn.out.DR_vcf)
     //bgzip(MobileAnn.out.DR_vcf)
 
     run_vep(svdb_merge.out)
     run_split(run_vep.out.annotated_vcf) 
 
-    splitfiles = Channel.fromPath("${params.tmpfiles}/*.VEP.*.vcf")
-    query(splitfiles)
+    //splitfiles = Channel.fromPath("${params.output}/*.VEP.*.vcf")
+    query(run_split.out)
     zip(query.out)
-    tomerge = Channel.fromPath("${params.tmpfiles}/*.query.sort.vcf.gz").collect()
+    tomerge = Channel.fromPath("${params.output}/*.query.sort.vcf.gz").collect()
     merge_calls(tomerge)
 }
 

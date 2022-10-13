@@ -6,7 +6,7 @@ Annotate output
 */
 
 process bgzip {
-  publishDir params.tmpfiles, mode: 'copy'
+  publishDir params.output, mode: 'copy'
   beforeScript 'module load bioinfo-tools tabix vcftools'
   errorStrategy 'ignore'
 
@@ -25,7 +25,7 @@ process bgzip {
 
 //VEP
 process run_vep {
-  publishDir params.tmpfiles, mode: 'copy'
+  publishDir params.output, mode: 'copy'
   beforeScript 'module load bioinfo-tools vep'
  
   cpus 4
