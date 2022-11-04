@@ -24,8 +24,11 @@ include { bgzip; bgzip as zip; run_vep } from './modules/annotate'
 include { run_split } from './modules/TEsplit'
 include { query } from './modules/dbquery'
 include { svdb_merge ; merge_calls } from  './modules/combine'
+include { filter_rank } from './modules/filter'
 
-//channels 
+if (File(${params.gene_list}).exists()) {
+    include { gene_list_filter } from './modules/filter'
+}
 
 
 workflow {
@@ -52,6 +55,11 @@ workflow {
     zip(query.out)
     tomerge = Channel.fromPath("${params.output}/*.query.sort.vcf.gz").collect()
     merge_calls(tomerge)
+    filter_rank(merge_calls.out)
+    if (File(${params.gene_list}).exists()) 
+        gene_list_filter(filter_rank.out)
+    
+
 }
 
 

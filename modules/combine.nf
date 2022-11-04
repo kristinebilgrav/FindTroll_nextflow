@@ -20,7 +20,7 @@ process svdb_merge {
     script:
     """
     svdb --merge --vcf  ${called_vcf} ${DR_vcf} --bnd_distance 150 > ${called_vcf.simpleName}.all.called.vcf &&
-    python ${params.working_dir}/scripts/filter.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
+    python ${params.working_dir}/scripts/filter_toTEs.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
     """
     
 }
@@ -32,10 +32,7 @@ process merge_calls {
     time '1h'
 
     input:
-    path(ALU)
-    path(HERV)
-    path(L1)
-    path(SVA)
+    path queryList
  
     output:
     path "${queryList[0].simpleName}.TEcalls.vcf.gz"
@@ -45,7 +42,7 @@ process merge_calls {
     zgrep '#' ${queryList[0]} > ${queryList[0].simpleName}.TEcalls.vcf.gz |
     for qFile in ${queryList}
     do
-        zgrep -v '#' \$qFile  >> ${queryList[0].simpleName}.TEcalls.vcf.gz && rm \$qFile
+        zgrep -v '#' \$qFile  >> ${queryList[0].simpleName}.TEcalls.vcf.gz 
     done 
     """
 }

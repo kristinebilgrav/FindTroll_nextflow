@@ -1,6 +1,10 @@
 import gzip as gz
 import sys
 
+"""
+filter to obtain TEs and desired chrs
+"""
+
 print('filtering' + sys.argv[1])
 file= open(sys.argv[2], 'w')
 deletelist= ['random', 'HLA', 'decoy', 'chrUn_', '_alt']
