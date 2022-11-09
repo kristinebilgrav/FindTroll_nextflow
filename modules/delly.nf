@@ -61,7 +61,7 @@ process MobileAnn {
 
     script:
     """
-    MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_bed} -d 300 > ${delly_vcf.simpleName}.mobileann.vcf &&  
-    python ${params.working_dir}/scripts/filter.py ${delly_vcf.simpleName}.mobileann.vcf ${delly_vcf.simpleName}.called.delly.retro.vcf
+    python MobileAnn.py --sv_annotate --sv ${delly_vcf} --db ${called_vcf} --rm ${params.ref_ME_bed} -d 300 > ${delly_vcf.simpleName}.mobileann.vcf &&  
+    python ${params.working_dir}/scripts/filter_MAtoTEs.py ${delly_vcf.simpleName}.mobileann.vcf ${delly_vcf.simpleName}.called.delly.retro.vcf
     """
 }

@@ -39,7 +39,7 @@ process run_vep {
 
   script:
   """
-  ${params.vep_path} -i ${gzipped} -o ${gzipped.baseName}.VEP.vcf ${params.vep_args} && rm ${gzipped}
+  vep -i ${gzipped} -o ${gzipped.baseName}.VEP.vcf ${params.vep_args} && rm ${gzipped}
   """
 
 }

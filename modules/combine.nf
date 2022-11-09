@@ -20,7 +20,7 @@ process svdb_merge {
     script:
     """
     svdb --merge --vcf  ${called_vcf} ${DR_vcf} --bnd_distance 150 > ${called_vcf.simpleName}.all.called.vcf &&
-    python ${params.working_dir}/scripts/filter_toTEs.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
+    python ${params.working_dir}/scripts/filter_MAtoTEs.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
     """
     
 }

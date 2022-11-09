@@ -13,8 +13,9 @@ process run_split {
     path "${annotated_vcf.baseName}.*.vcf" 
 
 
+
     script:
     """
-    python ${params.working_dir}/scripts/splitTEs.py ${annotated_vcf.baseName} ${annotated_vcf}
+    python ${params.working_dir}/scripts/splitTEs.py  ${annotated_vcf.baseName} ${annotated_vcf}
     """ 
 }

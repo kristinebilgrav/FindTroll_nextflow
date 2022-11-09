@@ -22,7 +22,7 @@ process query {
     TE = values[-2]
 
     """
-    svdb --query --query_vcf $split --db ${params."${TE}"} --overlap -1 --bnd_distance 150 > ${split.baseName}.query.vcf
+    svdb --query --query_vcf ${split} --db ${params."${TE}"} --overlap -1 --bnd_distance 150 > ${split.baseName}.query.vcf
     """
 }
 
