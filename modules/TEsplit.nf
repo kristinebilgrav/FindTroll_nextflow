@@ -5,14 +5,13 @@ module to split file into respective TE types
 */
 
 process run_split {
-    publishDir params.output, mode:'copy'
+    tag "${SampleID}:SplitOnTE"
+
     input:
-    path(annotated_vcf)
+    tuple val(SampleID) , file(annotated_vcf)
 
     output:
-    path "${annotated_vcf.baseName}.*.vcf" 
-
-
+    tuple val(SampleID), file("${annotated_vcf.baseName}.*.vcf")
 
     script:
     """

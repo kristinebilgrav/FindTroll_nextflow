@@ -5,37 +5,34 @@ module to merge TE files to one and delete unneeded files
 */
 
 process svdb_merge {
-    publishDir params.output, mode:'copy'
-
-    cpus 1
-    time '1h'
+    tag "${SampleID}:SVDB_merge"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
 
     input:
-    path(called_vcf)
-    path(DR_vcf)
+    tuple val(SampleID), path(retrofile), file(delly_vcf)
+
 
     output:
-    path "${called_vcf.simpleName}.called.vcf", emit: all_calls
+    tuple val(SampleID), file("${called_vcf.simpleName}.called.vcf"), emit: all_calls
 
     script:
     """
-    svdb --merge --vcf  ${called_vcf} ${DR_vcf} --bnd_distance 150 > ${called_vcf.simpleName}.all.called.vcf &&
+    svdb --merge --vcf  ${called_vcf} ${delly_vcf} --bnd_distance 150 > ${called_vcf.simpleName}.all.called.vcf &&
     python ${params.working_dir}/scripts/filter_MAtoTEs.py ${called_vcf.simpleName}.all.called.vcf ${called_vcf.simpleName}.called.vcf
     """
     
 }
 
 process merge_calls {
-    publishDir params.output, mode:'copy'
+    tag "${SampleID}:merge"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
     errorStrategy 'ignore'
-    cpus 1
-    time '1h'
-
+    
     input:
-    path queryList
+    tuple val(SampelID), file(queryList) 
  
     output:
-    path "${queryList[0].simpleName}.TEcalls.vcf.gz"
+    tuple val(SampleID), file("${queryList[0].simpleName}.TEcalls.vcf.gz")
 
     script:
     """

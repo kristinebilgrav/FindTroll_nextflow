@@ -25,17 +25,14 @@ process bgzip {
 
 //VEP
 process run_vep {
-  publishDir params.output, mode: 'copy'
-  beforeScript 'module load bioinfo-tools vep'
- 
-  cpus 4
-  time '1h'
-
+  tag "${SampleID}:VEP"
+  publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
+  
   input:
-  path(gzipped)
+  tuple val(SampleID), file(gzipped)
 
   output:
-  path "${gzipped.baseName}.VEP.vcf", emit: annotated_vcf
+  tuple val(SampleID), file("${gzipped.baseName}.VEP.vcf"), emit: annotated_vcf
 
   script:
   """

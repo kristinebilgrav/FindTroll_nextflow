@@ -6,15 +6,15 @@ module to query file against a database
 
 // make seperate to run at the same time
 process query {
-    publishDir params.output, mode:'copy'
-    cpus 1
-    time '5h'
+    tag "${SampleID}:query"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
+    
     
     input:
-    path(split)
+    tuple val(SampelID), file(split)
     
     output:
-    path "${split.baseName}.query.vcf", emit: query_vcf
+    tuple val(SampleID) , file("${split.baseName}.query.vcf")
     
     script:
 

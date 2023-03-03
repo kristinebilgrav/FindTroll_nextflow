@@ -8,37 +8,32 @@ module to run delly
 // run delly
 process run_delly {
 
-    publishDir params.output, mode:'copy'
-    cpus 4
-    time '10h'
-
+    tag "${SampleID}:Delly"
+   
+    
     input:
-    //path(bam)
-    tuple val(bamID), file(bamFile)
-    path(bai)
+    tuple val(SampleID), file(bam), file(bai)
 
     output:
-    path "${bamID}.delly.bcf", emit: delly_bcf
+    tuple val(SampleID), file("${bam.baseName}.delly.bcf")
 
     script:
     """
-    delly call -o ${bamID}.delly.bcf -g ${params.ref_fasta} ${bamFile}
+    delly call -o ${bam.baseName}.delly.bcf -g ${params.ref_fasta} ${bam}
     """
 
 
 }
 
 process bcf_to_vcf {
-    publishDir params.output, mode:'copy'
-    beforeScript 'module load bioinfo-tools bcftools'
-    cpus 2
-    time '1h'
+    tag "${SampleID}:BCFtoVCF"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
 
     input:
-    path(delly_bcf)
+    tuple val(SampleID), file(delly_bcf)
 
     output:
-    path "${delly_bcf.simpleName}.delly.vcf", emit: delly_vcf
+    tuple val(SampleID), file("${delly_bcf.simpleName}.delly.vcf")
 
     script:
     """
@@ -47,17 +42,14 @@ process bcf_to_vcf {
 }
 
 process MobileAnn {
-    publishDir params.output, mode:'copy'
-
-    cpus 2
-    time '1h'
+    tag "${SampleID}:MobileAnn"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
 
     input:
-    path(delly_vcf)
-    path(called_vcf)
+    tuple val(SampleID), file(delly_vcf), file(called_vcf)
 
     output:
-    path "${delly_vcf.simpleName}.called.delly.retro.vcf", emit: DR_vcf
+    tuple val(SampleID), file("${delly_vcf.simpleName}.called.delly.retro.vcf")
 
     script:
     """

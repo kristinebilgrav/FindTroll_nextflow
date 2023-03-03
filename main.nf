@@ -10,14 +10,35 @@ nextflow.enable.dsl = 2
 log.info """\
 FindTroll pipeline
 ------------------
-config: ${params.config}
-sample(s) : ${params.bam}
+sample(s) : ${params.input}
 output directory :  ${params.output}
 
 """
 
  
  // include modules
+if ( params.input.endsWith('csv') ) { 
+    Channel
+        .fromPath(params.input)
+        .splitCsv(header: true)
+        .map{ row ->  tuple(row.SampleID, file(row.SamplePath), file(row.SamplePath.tokenize('.')[0]+'*.*ai'))  }
+        .set{sample_channel}
+    
+}
+
+else {
+    String path = params.input 
+    SampleID = path.tokenize('/')[-1].tokenize('.')[0]
+    Channel
+        .fromPath(params.input) 
+        .map{tuple(SampleID, file(params.input), file(params.input.tokenize('.')[0]+'*.*ai') )}
+        .set{sample_channel}
+
+}
+if (params.file == 'cram') {
+    include { cramtobam } from './modules/cramtobam'
+}
+
 include { run_retro } from './modules/RetroSeq'
 include { run_delly ; bcf_to_vcf ; MobileAnn } from './modules/delly'
 include {  run_vep } from './modules/annotate'
@@ -27,42 +48,80 @@ include { svdb_merge ; merge_calls } from  './modules/combine'
 include { filter_rank } from './modules/filter'
 
 def file = new File(params.gene_list)
-if (file.exists()) 
+if (file.exists()) {
     include { gene_list_filter } from './modules/filter'
+}
 
 
 
-workflow {
-    bam = Channel
-        .fromFilePairs("${params.bam}")
-        //.map {file -> tuple(file.baseName, file)}
-        .view()
-    bai = Channel.fromPath("${params.bam}.bai")    
-    run_retro(bam, bai) 
-    run_delly(bam, bai)
-    bcf_to_vcf(run_delly.out)
+workflow retro{
+    take: sample_channel
 
-    //teannotate = Channel.fromFilePairs(["${params.output}/*called.R.vcf", "${params.output}/*.delly.vcf"])
+    main: 
+    if (params.file == 'cram') {
+        bam_bai_channel = cramtobam(sample_channel)
+    }
+    else {
+        bam_bai_channel =sample_channel
+    }
+ 
+    run_retro(bam_bai_channel) 
 
-    MobileAnn(bcf_to_vcf.out, run_retro.out.called_vcf )
-    svdb_merge(run_retro.out.called_vcf , MobileAnn.out.DR_vcf)
-
-
-    run_vep(svdb_merge.out)
+    run_vep(run_retro.out)
     run_split(run_vep.out.annotated_vcf) 
 
-   
     query(run_split.out.flatten())
 
     tomerge = Channel.fromPath("${params.output}/*.query.vcf").collect()
     merge_calls(tomerge)
     filter_rank(merge_calls.out)
-    if (file.exists()) 
+
+    if (file.exists()) {
         gene_list_filter(filter_rank.out)
-    
+    }
 
 }
 
+workflow wdelly {
+    if (params.file == 'cram') {
+        bam_bai_channel = cramtobam(sample_channel)
+    }
+    else {
+        bam_bai_channel =sample_channel
+    }
+ 
+    run_retro(bam_bai_channel) 
+    run_delly(bam_bai_channel)
+    bcf_to_vcf(run_delly.out)
+
+    delly_annotate_ch = bcf_to_vcf.join(run_retro.out)
+    MobileAnn(bcf_to_vcf.out)
+
+    merge_ch = run_retro.out.join(MobileAnn.out) //join
+    
+    svdb_merge(merge_ch)
+
+
+    run_vep(svdb_merge.out)
+    run_split(run_vep.out.annotated_vcf) 
+
+    query(run_split.out.flatten())
+
+    tomerge = Channel.fromPath("${params.output}/*.query.vcf").collect()
+    merge_calls(tomerge)
+    filter_rank(merge_calls.out)
+
+    if (file.exists()) {
+        gene_list_filter(filter_rank.out)
+    }
+
+}
+
+workflow {
+    main:
+    retro(sample_channel)
+
+}
 
 //completion handler
 workflow.onComplete {

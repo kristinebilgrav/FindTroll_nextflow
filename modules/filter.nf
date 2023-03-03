@@ -6,13 +6,14 @@ Frq and gene list filter
 
 
 process filter_rank {
-    publishDir params.output, mode: 'copy'
+    tag "${SampleID}:Filter"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
 
     input:
-    path(all_calls)
+    tuple val(SampleID), file(all_calls)
 
     output:
-    path "${all_calls.baseName}.clean.vcf", emit: all_calls_clean
+    tuple val(SampleID), file("${all_calls.baseName}.clean.vcf")
 
     script:
     """
@@ -21,13 +22,14 @@ process filter_rank {
 }
 
 process gene_list_filter {
-    publishDir params.output, mode: 'copy'
+    tag "${SampleID}:GeneListFilter"
+    publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
 
     input:
-    path(all_calls_clean)
+    tuple val(SampleID), file(all_calls_clean)
 
     output:
-    path "${all_calls_clean.baseName}.genes.vcf", emit: all_calls_genes
+    tuple val(SampleID), file("${all_calls_clean.baseName}.genes.vcf")
 
     script:
     """

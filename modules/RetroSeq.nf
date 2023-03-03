@@ -16,23 +16,20 @@ Run retroseq - calling of Trolls (TRanspOsabLe eLementS)
 
 //run RetroSeq
 process run_retro{
-  publishDir params.output, mode:'copy'
-
-  cpus 2
-  time '10h'
+  tag "${SampleID}:RetroSeq"
+  publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
   //errorStrategy 'ignore'
 
   input:
-  tuple val(bamID), file(bamFile)
-  path(bai)
+  tuple val(SampleID), file(bam), file(bai)
 
   output: 
-  path "${bamID}.called.R.vcf", emit: called_vcf
+  tuple val(SampelID), file("${bam.baseName}.called.R.vcf"), emit: called_vcf
 
   script:
   """
-  retroseq.pl -discover -bam ${bamFile} -output ${bamID}.discover.vcf -refTEs ${params.ref_ME_tab} && \
-  retroseq.pl -call -bam ${bamFile} -input ${bamID}.discover.vcf -ref ${params.ref_fasta}  -output ${bamID}.called.R.vcf
+  retroseq.pl -discover -bam ${bam} -output ${bam.baseName}.discover.vcf -refTEs ${params.ref_ME_tab} && \
+  retroseq.pl -call -bam ${bam} -input ${bam.baseName}.discover.vcf -ref ${params.ref_fasta}  -output ${bam.baseName}.called.R.vcf
   """
 
 }
