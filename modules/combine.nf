@@ -36,11 +36,16 @@ process merge_calls {
 
     script:
     """
+    vcf-concat ${queryList} > ${queryList[0].simpleName}.TEcalls.vcf.gz
+    """
+}
+
+/*
+ """
     zgrep '#' ${queryList[0]} > ${queryList[0].simpleName}.TEcalls.vcf.gz |
     for qFile in ${queryList}
     do
         zgrep -v '#' \$qFile  >> ${queryList[0].simpleName}.TEcalls.vcf.gz 
     done 
     """
-}
-
+*/

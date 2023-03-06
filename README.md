@@ -13,6 +13,7 @@ Docker image with RetroSeq, delly, MobileAnn and SVDB.
     --file < type of file; bam or cram >
     --output < output_directory> 
     --gene_list < optional gene list for filtering >
+    -with-trace
 
 samplesheet (csv) must include SampleID and SamplePath
 for resuming after fail, add -resume to command line

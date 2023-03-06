@@ -18,7 +18,7 @@ Run retroseq - calling of Trolls (TRanspOsabLe eLementS)
 process run_retro{
   tag "${SampleID}:RetroSeq"
   publishDir "${params.output}/${SampleID}_out/", mode: 'copy'
-  //errorStrategy 'ignore'
+  errorStrategy 'ignore'
 
   input:
   tuple val(SampleID), file(bam), file(bai)

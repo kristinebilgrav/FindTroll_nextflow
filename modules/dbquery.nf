@@ -11,7 +11,7 @@ process query {
     
     
     input:
-    tuple val(SampelID), file(split)
+    tuple val(SampleID), file(split)
     
     output:
     tuple val(SampleID) , file("${split.baseName}.query.vcf")
